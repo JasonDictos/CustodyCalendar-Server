@@ -46,4 +46,6 @@ for (const { months, events} of schedule.weekly) {
   const id = await api.locateOrCreateCalendar(gcal, schedule.calendar);
 
   console.log(`Found/Provisioned calendar with id ${id}`);
+
+  // Now 
 })();
