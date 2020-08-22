@@ -1,0 +1,53 @@
+{
+    "parents": {
+        "dad": {
+            "name": "Jason Dictos",
+            "address": "584 Omaha Ave. Clovis, CA 93619"
+        },
+        "mom": {
+            "name": "Jennipher Dictos",
+            "address": "960 San Marino Ave. Clovis, CA 93619"
+        }
+    },
+    "alternateWeekends": {
+        "start": "2020-08-21Z",
+        "range": "Fri:5:00PM-Mon:8:00AM"
+    },
+    "weekly": [
+        {
+            "months": "Sept-May",
+            "events": [
+                {
+                    "parent": "dad",
+                    "start": "Wed:7:45AM",
+                    "end": "Fri:6:00PM"
+                },
+                {
+                    "parent": "mom",
+                    "start": "Mon:8:00AM",
+                    "end": "Wed:7:45AM"
+                }
+            ]
+        },
+        {
+            "months": "Jun-Aug",
+            "events": [
+                {
+                    "parent": "dad",
+                    "start": "Wed:7:45AM",
+                    "end": "Thu:5:00PM"
+                },
+                {
+                    "parent": "mom",
+                    "start": "Thu:5:00PM",
+                    "end": "Fri:7:45:AM"
+                },
+                {
+                    "parent": "dad",
+                    "start": "Fri:7:45AM",
+                    "end": "Fri:5:00PM"
+                }
+            ]
+        }
+    ]
+}
