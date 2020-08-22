@@ -1,4 +1,8 @@
 {
+    "calendar": {
+        "summary": "Custody Schedule",
+        "timeZone": "America/Los_Angeles"
+    },
     "parents": {
         "dad": {
             "name": "Jason Dictos",

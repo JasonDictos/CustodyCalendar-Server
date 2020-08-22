@@ -1,6 +1,7 @@
 // Require google from googleapis package.
 const { google } = require('googleapis')
 const fs = require('fs')
+const api = require('./api')
 
 // Require oAuth2 from our google instance.
 const { OAuth2 } = google.auth
@@ -17,7 +18,7 @@ oAuth2Client.setCredentials({
 })
 
 // Create a new calender instance.
-const calendar = google.calendar({ version: 'v3', auth: oAuth2Client })
+const gcal = google.calendar({ version: 'v3', auth: oAuth2Client })
 
 // Load the schedule
 const schedule = JSON.parse(fs.readFileSync('./schedule.json'));
@@ -39,3 +40,10 @@ for (const { months, events} of schedule.weekly) {
     console.log(`    End: ${event.end}`);
   }
 }
+
+(async function() {
+  // Locate/provision our custody calendar
+  const id = await api.locateOrCreateCalendar(gcal, schedule.calendar);
+
+  console.log(`Found/Provisioned calendar with id ${id}`);
+})();
