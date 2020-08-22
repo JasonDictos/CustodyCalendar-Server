@@ -1,0 +1,24 @@
+{
+  "name": "custodycalendar",
+  "version": "1.0.0",
+  "description": "A way to manage custody with google calendar",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JasonDictos/CustodyCalendar.git"
+  },
+  "author": "Jason Dictos",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JasonDictos/CustodyCalendar/issues"
+  },
+  "homepage": "https://github.com/JasonDictos/CustodyCalendar#readme",
+  "dependencies": {
+    "googleapis": "^59.0.0",
+    "i": "^0.3.6",
+    "moment": "^2.27.0"
+  }
+}
