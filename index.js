@@ -26,31 +26,37 @@ const schedule = JSON.parse(fs.readFileSync('./schedule.json'));
 
 (async function() {
   // Locate/provision our custody calendar
-  const id = await api.locateCalendar(gcal, schedule, true);
-  console.log(`Custody Calendar processing events for calendar: ${schedule.summary}:${id}`);
+  if (!schedule.calendarId) {
+    schedule.calendarId = await api.locateCalendar(gcal, schedule, true);
+    console.log(`Custody Calendar processing events for calendar: ${schedule.summary}:${schedule.calendarId}`);
+  }
   console.log(`${schedule.start} (${schedule.interval}/${schedule.intervals})`);
 
   // Now apply the events from start to end in the schedule
   let now = DateTime.fromISO(schedule.start);
+  console.log(now.hour);
   while (schedule.interval < schedule.intervals) {
     const ctx = api.initCtx(now, schedule);
+
+    console.log(`Processing interval at time ${now.toLocaleString(DateTime.DATETIME_SHORT)}`);
 
     for (var eventId = 0; eventId < schedule.events.length; eventId++) {
       if (!api.processEventLine(ctx, schedule.events[eventId]))
         continue;
+      break;
     }
 
       // If the kids need a home...
     if (ctx.start && ctx.end && Object.keys(ctx.parent).length) {
         // Find them one (there better be one! otherwise this
         // means the schedule represents a possible invalid definition
-        await api.createEvent(ctx, gcal, id);
-        ctx.now = ctx.end;
+        await api.createEvent(ctx, gcal);
+        now = ctx.end;
         schedule.interval++;
         continue;
       }
 
-    throw new Error(`Kids have no home on ${now.toLocaleString()}!!`);
+    throw new Error(`Kids have no home on ${now.toLocaleString(DateTime.DATETIME_HUGE)}!!`);
   }
 
 })();

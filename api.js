@@ -25,8 +25,8 @@ function initCtx(now, schedule) {
         now,
         schedule,
         parent: {},
-        start: DateTime,
-        end: DateTime
+        start: null,
+        end: null
     };
 }
 
@@ -47,8 +47,9 @@ function processParent(ctx, parent) {
             // Find it by cruising the list as its not the index
             // but the friendly name within as a value
             for (i = 0; i < schedule.parents.length; i++) {
-                if (schedule.parents[i].id === parent)
+                if (schedule.parents[i].id === parent) {
                     return schedule.parents[i];
+                }
             }
             throw new Error(`Invalid parent id ${parent}`);
         }
@@ -70,28 +71,24 @@ function processWeekDay(ctx, w) {
 
     let [ start, end ] = w.split('-');
     start = WeekDays.indexOf(start);
+    end = WeekDays.indexOf(end);
     if (start <= 0)
         throw new Error(`Invalid weekday range ${w}`);
     if (end <= 0)
         throw new Error(`Invalid weekday range ${w}`);
+    var days = 0;
     if (start <= end) {
-        if (ctx.now.local().weekDay < ctx.now.local({weekDay: start}) ||
-                ctx.now.local().weekDay > ctx.now.local({weekDay: end}))
+        if (ctx.now.weekday < start || ctx.now.weekday > end)
             return false;
+        days = end - start;
     } else {
-        if (ctx.now.local().weekDay < ctx.now.local({weekDay: start}) ||
-                ctx.now.local().weekDay > ctx.now.local({weekDay: WeekDays.length}))
+        if (ctx.now.weekday > start || ctx.now.weekday < end)
             return false;
-        if (ctx.now.local().weekDay < ctx.now.local({weekDay: 1}) ||
-                ctx.now.local().weekDay > ctx.now.local({weekDay: end}))
+        if (ctx.now.weekday < 1 || ctx.now.weekday > WeekDays.length - end)
             return false;
     }
 
-    if (!ctx.start)
-        ctx.start = ctx.now;
-
-    if (ctx.start.local().weekDay === end)
-        ctx.end = ctx.start.local({ weekDay: end });
+    ctx.endWeekday = end;
 
     return true;
 }
@@ -116,74 +113,73 @@ function processMonths(ctx, months) {
 
     let [start, end] = months.split('-');
     start = Months.indexOf(start);
+    end = Months.indexOf(end);
     if (start <= 0)
         throw new Error(`Invalid month range ${months}`);
     if (end <= 0)
         throw new Error(`Invalid month range ${months}`);
     if (start <= end) {
-        if (ctx.now.local().month < ctx.now.local({month: start}) ||
-                ctx.now.local().month > ctx.now.local({month: end}))
+        if (ctx.now.month < start || ctx.now.month > end)
             return;
     } else {
-        if (ctx.now.local().month < ctx.now.local({month: start}) ||
-                ctx.now.local().month > ctx.now.local({month: 12}))
-            return;
-        if (ctx.now.local().month < ctx.now.local({month: 1}) ||
-                ctx.now.local().month > ctx.now.local({month: end}))
-            return;
+        if (ctx.now.month < start || ctx.now.month > 12)
+            return false;
+        if (ctx.now.month < 1 || ctx.now.month > end)
+            return false;
     }
 
-    if (!ctx.start)
-        ctx.start = ctx.now;
+    return true;
 }
 
-function processStartTime(ctx, s) {
-    const [hour, minute] = s.split(':');
-    s.start = s.start.local({ hour, minute });
-}
-
-function processEndTime(ctx, e) {
-    const [hour, minute] = e.split(':');
-    s.end = s.end.local({ hour, minute });
+function processEndTime(ctx, s, e) {
+    const [ehour, eminute] = e.split(':');
+    const [shour, sminute] = s.split(':');
+    ctx.start = ctx.now.set({hour: parseInt(shour), weekday: ctx.now.weekday, minute: parseInt(sminute)});
+    ctx.end = ctx.start.set({hour: parseInt(ehour), minute: parseInt(eminute)});
+    while (ctx.end.weekday !== ctx.endWeekday)
+        ctx.end = ctx.end.plus({days: 1});
 }
 
 function processEventLine(ctx, line) {
-    // Format is parent,months,weekDays,startTime,endTime
-    const [ parent, months, weekDays, startTime, endTime ] = line.split(',');
+    // Format is parent,months,weekdays,startTime,endTime
+    var [ parent, months, weekdays, startTime, endTime ] = line.split(',');
 
-    if (!processParent(ctx, parent))
+    console.log('Processing line', line);
+    console.log(`At time ${ctx.now.toLocaleString(DateTime.DATETIME_HUGE)}`);
+
+    parent = processParent(ctx, parent);
+    if (!parent)
         return false;
     if (!processMonths(ctx, months))
         return false;
-    if (!processWeekDay(ctx, weekDays))
+    if (!processWeekDay(ctx, weekdays))
         return false;
-    if (!processStartTime(ctx, startTime))
-        return false;
-    processEndTime(ctx, endTime);
+    processEndTime(ctx, startTime, endTime);
+    ctx.parent = parent;
     return true;
 }
 
 // Builds a gcal event (meeting) representing the custody time 
-async function createEvent(ctx, gcal, calendarId) {
+async function createEvent(ctx, gcal) {
     const resource = {
         summary: ctx.parent.summary,
         location: ctx.parent.location,
         description: ctx.parent.description,
         colorId: ctx.parent.colorId,
         start: {
-            dateTime: ctx.start.local().toISOTime(),
+            dateTime: ctx.start.valueOf(),
             timeZone: 'America/Denver',
         },
         end: {
-            dateTime: ctx.end.local().toISOTime(),
+            dateTime: ctx.end.valueOf(),
             timeZone: 'America/Denver',
         }
     };
 
   //await gcal.calendar.events.insert({ calendarId, resource });
 
-  console.log(`Added event ${ctx.parent.summary} ${ctx.parent.summary}`,
-     `${ctx.start.toLocaleString()} => ${ctx.end.toLocaleString()}`
+  console.log(`Added event ${ctx.parent.summary} ${ctx.parent.description}`,
+     `\n  ${ctx.start.toLocaleString(DateTime.DATETIME_HUGE)}\n  ${ctx.end.toLocaleString(DateTime.DATETIME_HUGE)}`
   );
 }
 

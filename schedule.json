@@ -1,16 +1,17 @@
 {
-    "start": "8/21/2020, 6:00 PM",
+    "start": "2020-08-21T18:00:00",
     "intervals": "2",
     "interval": "0",
     "timeZone": "America/Los_Angeles",
     "summary": "Custody Schedule",
+    "calendarId": "c_479jkcgbor5o1frhn94lqf9jqk@group.calendar.google.com",
     "parents": [
         {
             "id": "dad",
             "name": "Jason Dictos",
             "location": "584 Omaha Ave. Clovis, CA 93619",
             "birthDate": "1/8/1980",
-            "description": "Time with Dad",
+            "description": "",
             "summary": "Time with Dad",
             "colorId": 1
         },
@@ -19,17 +20,17 @@
             "name": "Jennipher Dictos",
             "address": "960 San Marino Ave. Clovis, CA 93619",
             "birthDate": "1/28/1981",
-            "description": "Time with Mom",
+            "description": "",
             "summary": "Time with Mom",
             "colorId": 8
         }
     ],
     "events": [
-        "alternate,Jan-Dec,Fri-Mon,6:00PM,8:00AM",
-        "dad,Sep-May,Wed-Fri,7:45,14:00",
-        "mom,Sep-May,Mon-Wed,8:00,15:45",
-        "dad,Jun-Aug,Wed-Thu,7:45,13:00PM",
-        "mom,Jun-Aug,Thu-Fri,13:00,7:45",
-        "dad,Jun-Aug,Fri-Fri,7:45,13:00"
+        "alternate,Jan-Dec,Fri-Mon,18:00,08:00",
+        "dad,Sep-May,Wed-Fri,07:45,18:00",
+        "mom,Sep-May,Mon-Wed,08:00,07:45",
+        "dad,Jun-Aug,Wed-Thu,07:45,17:00",
+        "mom,Jun-Aug,Thu-Fri,17:00,07:45",
+        "dad,Jun-Aug,Fri-Fri,07:45,17:00"
     ]
 }
