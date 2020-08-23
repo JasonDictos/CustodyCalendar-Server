@@ -77,16 +77,8 @@ function processWeekDay(ctx, w) {
     if (end <= 0)
         throw new Error(`Invalid weekday range ${w}`);
     var days = 0;
-    if (start <= end) {
-        if (ctx.now.weekday < start || ctx.now.weekday > end)
-            return false;
-        days = end - start;
-    } else {
-        if (ctx.now.weekday > start || ctx.now.weekday < end)
-            return false;
-        if (ctx.now.weekday < 1 || ctx.now.weekday > WeekDays.length - end)
-            return false;
-    }
+    if (ctx.now.weekday !== start)
+        return false;
 
     ctx.endWeekday = end;
 
@@ -122,13 +114,17 @@ function processMonths(ctx, months) {
         if (ctx.now.month < start || ctx.now.month > end)
             return;
     } else {
-        if (ctx.now.month < start || ctx.now.month > 12)
-            return false;
-        if (ctx.now.month < 1 || ctx.now.month > end)
+        if (ctx.now.month < end)
             return false;
     }
 
     return true;
+}
+
+function processStartTime(ctx, s) {
+    const [shour, sminute] = s.split(':');
+    const start = ctx.now.set({hour: parseInt(shour), weekday: ctx.now.weekday, minute: parseInt(sminute)});
+    return ctx.now.diff(start) >= 0;
 }
 
 function processEndTime(ctx, s, e) {
@@ -144,8 +140,8 @@ function processEventLine(ctx, line) {
     // Format is parent,months,weekdays,startTime,endTime
     var [ parent, months, weekdays, startTime, endTime ] = line.split(',');
 
-    console.log('Processing line', line);
-    console.log(`At time ${ctx.now.toLocaleString(DateTime.DATETIME_HUGE)}`);
+    //console.debug(`[${ctx.schedule.interval}] Processing line`, line);
+    //console.debug(`[${ctx.schedule.interval}] At time ${ctx.now.toLocaleString(DateTime.DATETIME_HUGE)}`);
 
     parent = processParent(ctx, parent);
     if (!parent)
@@ -153,6 +149,8 @@ function processEventLine(ctx, line) {
     if (!processMonths(ctx, months))
         return false;
     if (!processWeekDay(ctx, weekdays))
+        return false;
+    if (!processStartTime(ctx, startTime))
         return false;
     processEndTime(ctx, startTime, endTime);
     ctx.parent = parent;
@@ -164,19 +162,18 @@ async function createEvent(ctx, gcal) {
     const resource = {
         summary: ctx.parent.summary,
         location: ctx.parent.location,
-        description: ctx.parent.description,
         colorId: ctx.parent.colorId,
         start: {
-            dateTime: ctx.start.valueOf(),
+            dateTime: new Date(ctx.start.valueOf()),
             timeZone: 'America/Denver',
         },
         end: {
-            dateTime: ctx.end.valueOf(),
+            dateTime: new Date(ctx.end.valueOf()),
             timeZone: 'America/Denver',
         }
     };
 
-  //await gcal.calendar.events.insert({ calendarId, resource });
+    await gcal.events.insert({ calendarId: ctx.schedule.calendarId, resource });
 
   console.log(`Added event ${ctx.parent.summary} ${ctx.parent.description}`,
      `\n  ${ctx.start.toLocaleString(DateTime.DATETIME_HUGE)}\n  ${ctx.end.toLocaleString(DateTime.DATETIME_HUGE)}`

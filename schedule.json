@@ -1,10 +1,9 @@
 {
     "start": "2020-08-21T18:00:00",
-    "intervals": "2",
-    "interval": "0",
+    "intervals": 50,
+    "interval": 0,
     "timeZone": "America/Los_Angeles",
     "summary": "Custody Schedule",
-    "calendarId": "c_479jkcgbor5o1frhn94lqf9jqk@group.calendar.google.com",
     "parents": [
         {
             "id": "dad",
@@ -13,7 +12,7 @@
             "birthDate": "1/8/1980",
             "description": "",
             "summary": "Time with Dad",
-            "colorId": 1
+            "colorId": 9
         },
         {
             "id": "mom",
@@ -22,15 +21,17 @@
             "birthDate": "1/28/1981",
             "description": "",
             "summary": "Time with Mom",
-            "colorId": 8
+            "colorId": 11
         }
     ],
     "events": [
         "alternate,Jan-Dec,Fri-Mon,18:00,08:00",
+        "alternate,Jan-Dec,Fri-Mon,17:00,07:45",
         "dad,Sep-May,Wed-Fri,07:45,18:00",
         "mom,Sep-May,Mon-Wed,08:00,07:45",
+        "mom,Jun-Aug,Mon-Wed,08:00,07:45",
         "dad,Jun-Aug,Wed-Thu,07:45,17:00",
         "mom,Jun-Aug,Thu-Fri,17:00,07:45",
-        "dad,Jun-Aug,Fri-Fri,07:45,17:00"
+        "dad,Jun-Aug,Fri-Fri,07:45,18:00"
     ]
 }

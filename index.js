@@ -38,7 +38,7 @@ const schedule = JSON.parse(fs.readFileSync('./schedule.json'));
   while (schedule.interval < schedule.intervals) {
     const ctx = api.initCtx(now, schedule);
 
-    console.log(`Processing interval at time ${now.toLocaleString(DateTime.DATETIME_SHORT)}`);
+    //console.log(`[${ctx.schedule.interval}] Processing interval at time ${now.toLocaleString(DateTime.DATETIME_SHORT)}`);
 
     for (var eventId = 0; eventId < schedule.events.length; eventId++) {
       if (!api.processEventLine(ctx, schedule.events[eventId]))
@@ -51,6 +51,8 @@ const schedule = JSON.parse(fs.readFileSync('./schedule.json'));
         // Find them one (there better be one! otherwise this
         // means the schedule represents a possible invalid definition
         await api.createEvent(ctx, gcal);
+        if (now.diff(ctx.end) >= 0)
+          throw new Error(`Time did not advance from ${now.toLocaleString(DateTime.DATETIME_HUGE)}\n ${ctx.end.toLocaleString(DateTime.DATETIME_HUGE)}`);
         now = ctx.end;
         schedule.interval++;
         continue;
