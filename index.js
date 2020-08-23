@@ -2,6 +2,7 @@
 const { google } = require('googleapis')
 const fs = require('fs')
 const api = require('./api')
+const { DateTime }= require('luxon')
 
 // Require oAuth2 from our google instance.
 const { OAuth2 } = google.auth
@@ -23,29 +24,33 @@ const gcal = google.calendar({ version: 'v3', auth: oAuth2Client })
 // Load the schedule
 const schedule = JSON.parse(fs.readFileSync('./schedule.json'));
 
-// Get the start of the alternate weekend schedule
-const { start, range } = schedule.alternateWeekends;
-
-console.log('Alternate weekends starting with dad on:')
-console.log(`  Start: ${start}`);
-console.log(`  Range: ${range}`);
-
-// Now walk the weekly events
-for (const { months, events} of schedule.weekly) {
-  console.log('');
-  console.log(`For the months of ${months}:`);
-  for (const event of events) {
-    console.log(`  Parent: ${event.parent} (${schedule.parents[event.parent].name})`);
-    console.log(`    Start: ${event.start}`);
-    console.log(`    End: ${event.end}`);
-  }
-}
-
 (async function() {
   // Locate/provision our custody calendar
-  const id = await api.locateOrCreateCalendar(gcal, schedule.calendar);
+  const id = await api.locateCalendar(gcal, schedule, true);
+  console.log(`Custody Calendar processing events for calendar: ${schedule.summary}:${id}`);
+  console.log(`${schedule.start} (${schedule.interval}/${schedule.intervals})`);
 
-  console.log(`Found/Provisioned calendar with id ${id}`);
+  // Now apply the events from start to end in the schedule
+  let now = DateTime.fromISO(schedule.start);
+  while (schedule.interval < schedule.intervals) {
+    const ctx = api.initCtx(now, schedule);
 
-  // Now 
+    for (var eventId = 0; eventId < schedule.events.length; eventId++) {
+      if (!api.processEventLine(ctx, schedule.events[eventId]))
+        continue;
+    }
+
+      // If the kids need a home...
+    if (ctx.start && ctx.end && Object.keys(ctx.parent).length) {
+        // Find them one (there better be one! otherwise this
+        // means the schedule represents a possible invalid definition
+        await api.createEvent(ctx, gcal, id);
+        ctx.now = ctx.end;
+        schedule.interval++;
+        continue;
+      }
+
+    throw new Error(`Kids have no home on ${now.toLocaleString()}!!`);
+  }
+
 })();

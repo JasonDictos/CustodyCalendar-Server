@@ -1,57 +1,35 @@
 {
-    "calendar": {
-        "summary": "Custody Schedule",
-        "timeZone": "America/Los_Angeles"
-    },
-    "parents": {
-        "dad": {
+    "start": "8/21/2020, 6:00 PM",
+    "intervals": "2",
+    "interval": "0",
+    "timeZone": "America/Los_Angeles",
+    "summary": "Custody Schedule",
+    "parents": [
+        {
+            "id": "dad",
             "name": "Jason Dictos",
-            "address": "584 Omaha Ave. Clovis, CA 93619"
+            "location": "584 Omaha Ave. Clovis, CA 93619",
+            "birthDate": "1/8/1980",
+            "description": "Time with Dad",
+            "summary": "Time with Dad",
+            "colorId": 1
         },
-        "mom": {
+        {
+            "id": "mom",
             "name": "Jennipher Dictos",
-            "address": "960 San Marino Ave. Clovis, CA 93619"
+            "address": "960 San Marino Ave. Clovis, CA 93619",
+            "birthDate": "1/28/1981",
+            "description": "Time with Mom",
+            "summary": "Time with Mom",
+            "colorId": 8
         }
-    },
-    "alternateWeekends": {
-        "start": "2020-08-21Z",
-        "range": "Fri:5:00PM-Mon:8:00AM"
-    },
-    "weekly": [
-        {
-            "months": "Sep-May",
-            "events": [
-                {
-                    "parent": "dad",
-                    "start": "Wed:7:45AM",
-                    "end": "Fri:6:00PM"
-                },
-                {
-                    "parent": "mom",
-                    "start": "Mon:8:00AM",
-                    "end": "Wed:7:45AM"
-                }
-            ]
-        },
-        {
-            "months": "Jun-Aug",
-            "events": [
-                {
-                    "parent": "dad",
-                    "start": "Wed:7:45AM",
-                    "end": "Thu:5:00PM"
-                },
-                {
-                    "parent": "mom",
-                    "start": "Thu:5:00PM",
-                    "end": "Fri:7:45:AM"
-                },
-                {
-                    "parent": "dad",
-                    "start": "Fri:7:45AM",
-                    "end": "Fri:5:00PM"
-                }
-            ]
-        }
+    ],
+    "events": [
+        "alternate,Jan-Dec,Fri-Mon,6:00PM,8:00AM",
+        "dad,Sep-May,Wed-Fri,7:45,14:00",
+        "mom,Sep-May,Mon-Wed,8:00,15:45",
+        "dad,Jun-Aug,Wed-Thu,7:45,13:00PM",
+        "mom,Jun-Aug,Thu-Fri,13:00,7:45",
+        "dad,Jun-Aug,Fri-Fri,7:45,13:00"
     ]
 }
