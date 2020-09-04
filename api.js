@@ -25,7 +25,7 @@ function initCtx(now, schedule) {
         now,
         schedule,
         parent: {},
-        start: null,
+        start: DateTime,
         end: null
     };
 }
