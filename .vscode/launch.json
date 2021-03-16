@@ -7,11 +7,10 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\index.js"
+            "name": "TypeScript",
+            "program": "${workspaceFolder}\\src\\main.ts",
+            "preLaunchTask": "npm: build",
+            "console": "integratedTerminal"
         }
     ]
 }

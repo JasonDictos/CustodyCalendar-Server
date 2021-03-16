@@ -1,7 +1,7 @@
 {
     "start": "2020-08-21T18:00:00",
     "intervals": 50,
-    "interval": 0,
+    "interval": 5,
     "timeZone": "America/Los_Angeles",
     "summary": "Custody Schedule-Dev",
     "children": [
