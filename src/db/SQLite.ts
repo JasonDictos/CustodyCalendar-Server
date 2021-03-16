@@ -1,4 +1,4 @@
-import { knex } from 'knex';
+import knex from 'knex';
 
 export class SQLite {
     public constructor(
@@ -12,7 +12,8 @@ export class SQLite {
                 client: 'sqlite',
                 connection: {
                     filename: this.mPath
-                }
+                },
+                useNullAsDefault: true
             });
         }
     }
