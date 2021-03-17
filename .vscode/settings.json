@@ -1,3 +1,8 @@
 {
-    "editor.stickyTabStops": true
+    "editor.stickyTabStops": true,
+    "typescript.preferences.importModuleSpecifier": "relative",
+    "editor.insertSpaces": false,
+    "editor.tabCompletion": "on",
+	"editor.detectIndentation": false,
+	"editor.useTabStops": false
 }

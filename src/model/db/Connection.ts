@@ -9,13 +9,12 @@ export class Connection {
     }
 
     async connect() {
-        if (!this.mConn) {
-            this.mConn = await knex({ client: this.mClient, connection: this.mConfig });
-            await this.mConn.initialize();
-        }
+        if (!this.mConn)
+            this.mConn = await knex({ client: this.mClient, connection: this.mConfig, useNullAsDefault: true });
     }
 
-    get schema() {
-        return this.mConn.schema;
-    }
+    get schema() { return this.mConn.schema; }
+    get tables() { return this.mConn.tables; }
+
+    table(name: string) { return knex(name); }
 }

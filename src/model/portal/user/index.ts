@@ -1,6 +1,5 @@
 import { UserType as Type, User } from './user';
 export { UserType as Type, User } from './user';
-export * as api from './api';
 
 // Visitation with a parent at a location
 export type Builtin = User<Type.Builtin, User.Builtin>;

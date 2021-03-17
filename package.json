@@ -5,7 +5,7 @@
   "description": "A way to manage custody with google calendar",
   "type": "module",
   "scripts": {
-    "build": "npx tsc && copy package.json build\\package.json && cd build && npm install --only=production"
+    "build": "npx tsc"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,7 @@
     "luxon": "^1.24.1",
     "module-alias": "^2.2.2",
     "moment": "^2.27.0",
+    "pg": "^8.5.1",
     "sqlite3": "^5.0.2",
     "ts-node": "^9.1.1"
   },

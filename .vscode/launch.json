@@ -8,6 +8,8 @@
             "type": "node",
             "request": "launch",
             "name": "TypeScript",
+            "runtimeExecutable": "node",
+            "runtimeArgs": ["--loader", "ts-node/esm", "--experimental-specifier-resolution=node"],
             "program": "${workspaceFolder}\\src\\server\\server.ts",
             "preLaunchTask": "npm: build",
             "console": "integratedTerminal"

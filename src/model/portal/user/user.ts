@@ -2,8 +2,8 @@ import knex from 'knex';
 import { Type } from '.';
 
 export enum UserType {
-    External,
-    Builtin,
+    External = "external",
+    Builtin = "builtin",
 }
 
 export interface User<Type extends UserType, Body> {
@@ -22,6 +22,3 @@ export namespace User {
         password: string;
     }
 }
-
-export const Table = knex<User<Type, Body>>("user");
-
