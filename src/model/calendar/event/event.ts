@@ -15,7 +15,7 @@ export interface Visitation {
     dependentIds: number[];
 }
 
-export interface Row<Type extends EventType, Body> {
+export interface Event<Type extends EventType, Body> {
     id: number;
     type: Type;
     start: DateTime;
@@ -24,7 +24,7 @@ export interface Row<Type extends EventType, Body> {
     body: Body;
 }
 
-export namespace Row {
+export namespace Event {
     export type Visitation = {
         pickupGuardianId: number;
         dropoffGuardianId: number;

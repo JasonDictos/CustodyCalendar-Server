@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "TypeScript",
-            "program": "${workspaceFolder}\\src\\main.ts",
+            "program": "${workspaceFolder}\\src\\server\\server.ts",
             "preLaunchTask": "npm: build",
             "console": "integratedTerminal"
         }

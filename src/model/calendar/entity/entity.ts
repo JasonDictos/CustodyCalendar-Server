@@ -1,5 +1,5 @@
 // Defines the body concretely for the entity row
-export enum RowType {
+export enum EntityType {
 	Guardian = "guardian",
 	Dependent = "dependent",
 	Info = "info",
@@ -7,7 +7,7 @@ export enum RowType {
 
 // The sub type further defines some logical definition to the
 // convrete body type above
-export enum RowSubType {
+export enum EntitySubType {
 	Location = "location",
 	Parent = "parent",  
 	Relative = "relative",
@@ -17,15 +17,15 @@ export enum RowSubType {
 	Monitor = "monitor",
 }
 
-// Row wrapper to generalize how we encode entities in the eneity table
-export interface Row<Type extends RowType, SubType extends RowSubType, Body> {
+// Entity wrapper to generalize how we encode entities in the eneity table
+export interface Entity<Type extends EntityType, SubType extends EntitySubType, Body> {
 	id: number;
 	type: Type;
 	subType: SubType;
 	body: Body;
 }
 
-export namespace Row {
+export namespace Entity {
 	type PhoneNumber = {
 		name: string,				// general purpose, may be type, or named
 		number: string;				// fully qualified phone number 
