@@ -14,13 +14,13 @@ Server.get("/", (req, res) => {
 	PortalDb = await model.portal.schema.provision(new model.db.SQLite({ filename: "D:/portal.db" }));
 
 	// Addd a dummy user
-	const customerId = await PortalDb.table("users").insert({
+	const customerId = await PortalDb.table('users').insert({
 		type: model.portal.user.Type.Builtin,
 		body: {
 			name: "Jason Dictos",
 			hobby: "Messing with Node",
 		}
-	}).returning('id');
+	});
 
 	console.log("Added customer", customerId);
 

@@ -3,7 +3,7 @@ import * as user from './user';
 
 export async function provision(conn: db.Connection): Promise<db.Connection> {
 	await conn.connect();
-	await conn.schema.createTable("users", function(col) {
+	await conn.schema.createTableIfNotExists("users", function(col) {
 		col.increments("id");
 		col.string("type");
 		col.json("body");

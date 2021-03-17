@@ -16,5 +16,5 @@ export class Connection {
     get schema() { return this.mConn.schema; }
     get tables() { return this.mConn.tables; }
 
-    table(name: string) { return knex(name); }
+    table(name: string) { return this.mConn.table(name); }
 }
