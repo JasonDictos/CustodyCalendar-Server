@@ -1,6 +1,6 @@
 import { Entity, EntityType as Type, EntitySubType as SubType } from './entity';
 export { Entity, EntityType as Type, EntitySubType as SubType } from './entity';
-export * as api from './api';
+export * from './schema';
 
 // A location, may be associated to one entity
 export type Location = Entity<Type.Info, SubType.Location, Entity.Location>;

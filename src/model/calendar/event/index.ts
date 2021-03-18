@@ -1,5 +1,6 @@
 import { EventType as Type, Event } from './event';
 export { EventType as Type, Event } from './event';
+export * from './schema';
 export * as api from './api';
 
 // Visitation with a parent at a location

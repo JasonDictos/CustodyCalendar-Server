@@ -14,7 +14,7 @@ export interface User<Type extends UserType, Body> {
 
 export namespace User {
     export type External = {
-        oauth2stuff: any;   // @@ TODO
+        oauth2stuff: any;   // @@ TODO 
     }
 
     export type Builtin = {
