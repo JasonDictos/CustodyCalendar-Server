@@ -1,7 +1,7 @@
 {
   "name": "custodycalendar",
   "version": "1.0.0",
-  "module": "es2020",
+  "module": "esNext",
   "description": "A way to manage custody",
   "type": "module",
   "scripts": {
@@ -18,10 +18,11 @@
     "url": "https://github.com/JasonDictos/CustodyCalendar/issues"
   },
   "jest": {
-	  "preset": "ts-jest"
+    "preset": "ts-jest"
   },
   "homepage": "https://github.com/JasonDictos/CustodyCalendar#readme",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "googleapis": "^59.0.0",
     "i": "^0.3.6",
@@ -29,6 +30,7 @@
     "luxon": "^1.24.1",
     "module-alias": "^2.2.2",
     "moment": "^2.27.0",
+    "parse-database-url": "^0.3.0",
     "pg": "^8.5.1",
     "sqlite3": "^5.0.2",
     "ts-node": "^9.1.1"
@@ -44,6 +46,7 @@
     "@types/luxon": "^1.26.2",
     "@types/node": "^14.14.35",
     "jest": "^26.6.3",
+    "ramda": "^0.27.1",
     "ts-jest": "^26.5.4",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^4.2.3"

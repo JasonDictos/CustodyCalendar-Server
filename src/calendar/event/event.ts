@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 
-export enum EventType {
+export enum Type {
     Visitation,     // A custodioal is enjoying some time with one or more dependents,
                     // another is picking them up
     Appointment,    // Some responsible party is taking a dependent to an appointment
@@ -9,28 +9,21 @@ export enum EventType {
                     // another is picking them up
 }
 
+export interface Row {
+    id: number;
+    type: Type;
+    start: DateTime;
+    stop: DateTime;
+    entityId: number;
+    body: Record<string, any>;
+}
+
 export interface Visitation {
     pickupEntityId: number;
     dropoffEntityId: number;
     dependentIds: number[];
 }
 
-export interface Event<Type extends EventType, Body> {
-    id: number;
-    type: Type;
-    start: DateTime;
-    stop: DateTime;
-    entityId: number;
-    body: Body;
-}
-
-export namespace Event {
-    export type Visitation = {
-        pickupGuardianId: number;
-        dropoffGuardianId: number;
-    }
-
-    export type Appointment = {
-        guardianId: number;
-    }
+export type Appointment = {
+    guardianId: number;
 }
