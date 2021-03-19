@@ -7,25 +7,25 @@ export namespace Database {
 	export const schema = process.env.CALENDAR_DATABASE_SCHEMA || 'calendar'
 	export const url = process.env.CALENDAR_DATABASE_URL
 	export const config = parseDbUrl(url)
-	export const {database, user, name, username, password, hostname, host, port} = config
+	export const { database, user, name, username, password, hostname, host, port } = config
 	export const poolMin = Number(process.env.DATABASE_POOL_MIN || '0')
 	export const poolMax = Number(process.env.DATABASE_POOL_MAX || '10')
 }
 
 export const Knex = {
-  client: 'postgresql',
-  connection: {
-	host: Database.host,
-	database: Database.database,
-	user: Database.user,
-	password: Database.password,
-	port: Database.port,
-  },
-  pool: {
-	min: Database.poolMin,
-	max: Database.poolMax,
-  },
-  migrations: {
-	tableName: 'KnexMigrations',
-  },
+	client: 'postgresql',
+	connection: {
+		host: Database.host,
+		database: Database.database,
+		user: Database.user,
+		password: Database.password,
+		port: Database.port,
+	},
+	pool: {
+		min: Database.poolMin,
+		max: Database.poolMax,
+	},
+	migrations: {
+		tableName: 'KnexMigrations',
+	},
 }

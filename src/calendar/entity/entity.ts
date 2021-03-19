@@ -9,7 +9,7 @@ export enum Type {
 // convrete body type above
 export enum SubType {
 	Location = "location",
-	Parent = "parent",  
+	Parent = "parent",
 	Relative = "relative",
 	Foster = "foster",
 	Child = "child",
@@ -27,7 +27,7 @@ export interface Row {
 
 type PhoneNumber = {
 	name: string,				// general purpose, may be type, or named
-	number: string;				// fully qualified phone number 
+	number: string;				// fully qualified phone number
 }
 
 export interface Location {
@@ -47,7 +47,7 @@ export interface Guardian {
 	number: PhoneNumber[];      // various ways to get in touch with this person
 	location: Location[];		// we expect all guardians to have one (or more) locations available as thats kinda required
 	dependentIds: number[];		// row ids for dependents (want them separate to be able to store it once
-								// and reference it as needed)
+	// and reference it as needed)
 }
 
 export interface Dependent {

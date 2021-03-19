@@ -4,5 +4,8 @@
     "editor.tabCompletion": "on",
     "editor.insertSpaces": false,
 	"editor.detectIndentation": false,
-	"editor.useTabStops": false
+	"editor.useTabStops": false,
+	"tsfmt.tslint.autoFix": "enabled",
+	"editor.unusualLineTerminators": "auto",
+	"tslint.configFile": "tsconfig.lint.json"
 }

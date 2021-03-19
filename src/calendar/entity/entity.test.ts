@@ -2,13 +2,14 @@ import * as entity from '.';
 import * as config from '../../util/testconfig';
 import Knex from 'knex';
 
-describe('Test entity rows', function () {	
+describe('Test entity rows', function() {
 	const connection = Knex(config.Knex);
 
 	afterAll(() => {
 		return connection.destroy();
 	});
-	test('Insertion', async function () {
+	test('Insertion', async function() 
+	{
 		const table = await entity.table(config.Database.schema, connection);
 
 		await expect(table.count()).resolves.toBe(0);
@@ -18,8 +19,8 @@ describe('Test entity rows', function () {
 			subType: entity.SubType.Location,
 			body: {
 				address: '584 Omaha Ave. Clovis, CA 93611'
-			} as entity.Location}
-		);
+			} as entity.Location
+		});
 
 		await expect(table.count()).resolves.toBe(1);
 

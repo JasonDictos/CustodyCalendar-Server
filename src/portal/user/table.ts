@@ -3,7 +3,7 @@ import { Row } from './user';
 import * as model from '../../model';
 
 export class Table extends model.Table<Row> {
-	async create() { 
+	async create() {
 		if (!(await this.exists())) {
 			await this.schema.createTable(this.name, table => {
 				table.increments('id')

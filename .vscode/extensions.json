@@ -1,5 +1,9 @@
 {
 	"recommendations": [
-		"orta.vscode-jest"
+		"orta.vscode-jest",
+		"ms-vscode-remote.remote-ssh",
+		"firsttris.vscode-jest-runner",
+		"ms-vscode-remote.remote-containers",
+		"eternalphane.tsfmt-vscode"
 	]
 }

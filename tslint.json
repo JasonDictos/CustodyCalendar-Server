@@ -1,0 +1,18 @@
+{
+	"extends": [
+	  "tslint:recommended"
+	],
+	"rules": {
+	  "ordered-imports": false,
+	  "object-literal-sort-keys": false,
+	  "no-namespace": false,
+	  "only-arrow-functions": false,
+	  "no-shadowed-variable": false,
+	  "no-console": [true, "log"],
+	  "no-empty": false,
+	  "whitespace": [true, "check-branch", "check-operator", "check-typecast", "check-decl"],
+	  "indent": [true, "tabs", 4],
+	  "max-classes-per-file" : false,
+	  "one-line": [true, "check-catch", "check-openbrace", "check-finally", "check-else"]
+	}
+  }

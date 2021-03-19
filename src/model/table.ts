@@ -27,7 +27,7 @@ export abstract class Table<Row> {
 
 	async list(input?: Partial<Row>) {
 		const query = this.query.select();
-		if (input) 
+		if (input)
 			query.where(input)
 
 		return (await query as Row[])

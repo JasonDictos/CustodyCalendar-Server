@@ -6,7 +6,7 @@ import * as schema from './schema';
 import * as user from './user';
 
 // Initiate our schema, one table currently users
-let Portal = await schema.connect(Knex(config.Knex));
+const Portal = await schema.connect(Knex(config.Knex));
 
 const Server = Express();
 
@@ -15,6 +15,6 @@ Server.get("/", (req, res) => {
 });
 
 (async function() {
-	Server.listen(config.Server.port, () => { console.log("Listening on port", config.Server.port); })
+	Server.listen(config.Server.port, () => { console.info("Listening on port", config.Server.port); })
 	setInterval(function() { }, Number.MAX_SAFE_INTEGER);
 })();
