@@ -1,21 +1,15 @@
 import * as entity from '.';
-import * as config from '../config';
+import * as config from '../../util/testconfig';
 import Knex from 'knex';
 
 describe('Test entity rows', function () {	
 	const connection = Knex(config.Knex);
 
-	beforeEach(() => {
-		return connection.raw('START TRANSACTION');
-	});
-	afterEach(() => {
-		return connection.raw('ROLLBACK');
-	});
 	afterAll(() => {
 		return connection.destroy();
 	});
 	test('Insertion', async function () {
-		const table = await entity.table('api', connection);
+		const table = await entity.table(config.Database.schema, connection);
 
 		await expect(table.count()).resolves.toBe(0);
 

@@ -1,2 +1,1 @@
-CALENDAR_DATABASE_SCHEMA=test
 CALENDAR_DATABASE_URL=postgres://postgres@localhost:8888?password=password

@@ -1,11 +1,11 @@
 import parseDbUrl from 'parse-database-url'
 import dotenv from 'dotenv'
 
-dotenv.config()
+dotenv.config({ path: './.test_env'})
 
 export namespace Database {
-	export const schema = process.env.CALENDAR_DATABASE_SCHEMA || 'calendar'
-	export const url = process.env.CALENDAR_DATABASE_URL
+	export const schema = process.env.CALENDAR_DATABASE_SCHEMA || Date.now().valueOf().toString(16)
+	export const url = process.env.CALENDAR_DATABASE_URL || 'postgres://postgres@localhost:8888?password=password'
 	export const config = parseDbUrl(url)
 	export const {database, user, name, username, password, hostname, host, port} = config
 	export const poolMin = Number(process.env.DATABASE_POOL_MIN || '0')
