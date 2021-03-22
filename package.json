@@ -8,6 +8,8 @@
     "start": "npm run build && node --loader ts-node/esm --experimental-specifier-resolution=node build/server/server.js",
     "test": "npx jest --coverage",
     "build": "tsc -p tsconfig.app.json",
+    "docker-build": "docker build -t portal .",
+    "lint": "tsc -p tsconfig.app.json",
     "watch:build": "tsc --watch",
     "watch:test": "jest --watch"
   },
