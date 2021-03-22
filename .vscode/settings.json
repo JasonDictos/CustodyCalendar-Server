@@ -5,7 +5,17 @@
     "editor.insertSpaces": false,
 	"editor.detectIndentation": false,
 	"editor.useTabStops": false,
-	"tsfmt.tslint.autoFix": "enabled",
 	"editor.unusualLineTerminators": "auto",
-	"tslint.configFile": "tsconfig.lint.json"
+	"eslint.codeAction.showDocumentation": {
+		"enable": true
+	},
+	"eslint.format.enable": true,
+	"eslint.lintTask.enable": true,
+	"eslint.probe": [
+		"typescript",
+		"markdown"
+	],
+	"eslint.workingDirectories": [
+	],
+	"eslint.alwaysShowStatus": true
 }

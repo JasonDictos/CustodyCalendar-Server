@@ -1,5 +1,3 @@
-import assert from 'assert';
-
 export enum Type {
 	External = "external",
 	Builtin = "builtin",

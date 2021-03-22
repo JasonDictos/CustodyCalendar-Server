@@ -1,6 +1,6 @@
-import { Knex } from 'knex';
-import { Database } from './config';
-import * as user from './user';
+import { Knex } from "knex"
+import { Database } from "./config"
+import * as user from "./user"
 
 export interface Schema {
 	name: string;

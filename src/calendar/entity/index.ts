@@ -1,2 +1,2 @@
-export * from './entity'
-export * from './table'
+export * from "./entity"
+export * from "./table"
