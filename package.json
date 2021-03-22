@@ -5,8 +5,8 @@
   "description": "A way to manage custody",
   "type": "module",
   "scripts": {
-    "start": "npm run build && node --loader ts-node/esm --experimental-specifier-resolution=node build/port/server.js",
-    "test": "npx jest --coverage --config=jest.config.cfs",
+    "start": "npm run build && node --loader ts-node/esm --experimental-specifier-resolution=node build/server/server.js",
+    "test": "npx jest --coverage",
     "build": "tsc -p tsconfig.app.json",
     "watch:build": "tsc --watch",
     "watch:test": "jest --watch"
