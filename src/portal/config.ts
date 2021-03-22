@@ -4,8 +4,8 @@ import dotenv from "dotenv"
 dotenv.config()
 
 export namespace Database {
-	export const schema = "portal"
-	export const url = process.env.DATABASE_URL
+	export const schema = process.env.PORTAL_DATABASE_SCHEMA || "portal"
+	export const url = process.env.PORTAL_DATABASE_URL
 	export const config = parseDbUrl(url)
 	export const { database, user, name, username, password, hostname, host, port } = config
 	export const poolMin = Number(process.env.DATABASE_POOL_MIN || "0")
@@ -24,8 +24,7 @@ export const Knex = {
 	},
 	pool: {
 		min: Database.poolMin,
-		max: Database.poolMax,
-		idle: Database.poolIdle
+		max: Database.poolMax
 	},
 	migrations: {
 		tableName: "KnexMigrations",
