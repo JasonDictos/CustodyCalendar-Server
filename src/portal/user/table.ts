@@ -16,7 +16,6 @@ export class Table extends model.Table<Row> {
 	}
 }
 
-
 export async function table(schema: string, knex: Knex): Promise<Table> {
 	await knex.schema.createSchemaIfNotExists(schema)
 	return await (new Table("user", schema, knex)).create()

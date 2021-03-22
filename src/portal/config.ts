@@ -13,13 +13,6 @@ export namespace Database {
 	export const poolIdle = Number(process.env.DATABASE_POOL_IDLE || "10000")
 }
 
-export namespace Server {
-	export const port = Number(process.env.PORTAL_PORT || "8000")
-	export const bodyLimit = "100kb"
-	export const corsHeaders = ["Link"]
-	export const isDev = process.env.NODE_ENV === "development"
-}
-
 export const Knex = {
 	client: "postgresql",
 	connection: {

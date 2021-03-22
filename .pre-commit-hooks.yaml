@@ -1,7 +1,0 @@
-- id: tsfmt
-  name: tsfmt
-  entry: tsfmt
-  language: node
-  files: \.ts$
-  args:
-  - --replace

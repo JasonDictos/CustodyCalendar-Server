@@ -18,4 +18,3 @@ export function randomString(length) {
 		result += characters.charAt(Math.floor(Math.random() * charactersLength))
 	return result
 }
-

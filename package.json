@@ -6,8 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "npm run build && node --loader ts-node/esm --experimental-specifier-resolution=node build/port/server.js",
-    "test": "npm run test && npm run test:coverage",
-    "test:coverage": "jest --coverage",
+    "test": "npx jest --coverage --config=jest.config.cfs",
     "build": "tsc -p tsconfig.app.json",
     "watch:build": "tsc --watch",
     "watch:test": "jest --watch"
