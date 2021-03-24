@@ -25,19 +25,17 @@ export abstract class Model<Type, Fields, RowType = Row<Type, Fields>> {
 	async exists() { return this.schema.hasTable(this.tableName) }
 
 	async get(id: RowId): Promise<RowType> {
-		try {
-			const q = this.table.select().whereRaw(`id = '${id}'`)
-			return (await q)[0]
-		} catch (error) {
-			console.warn(error)
-			throw error
-		}
+		const res = await this.table.select().where({ id })
+		if (res.length)
+			return res[0]
+		throw new Error(`Not found ${id}`)
 	}
 
 	async delete(id?: RowId) {
 		if (id)
 			await this.table.delete().where({ id })
-		await this.table.delete()
+		else
+			await this.table.delete()
 	}
 
 	async count(): Promise<number> {
