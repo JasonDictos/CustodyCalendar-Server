@@ -1,0 +1,39 @@
+{
+	"openrpc": "1.0.0-rc1",
+	"info": {
+	  "title": "Custody Calendar Portal",
+	  "description": "Portal api definitions",
+	  "version": "1.0.0"
+	},
+	"servers": [
+	  {
+		"name": "west.custodycalendar.com",
+		"url": "http://west.custodycalendar.org:5555/portal"
+	  }
+	],
+	"methods": [
+	  {
+		"name": "login",
+		"params": [
+		  { "name": "user", "schema": { "$ref": "#/components/schemas/String" } },
+		  { "name": "password", "schema": { "$ref": "#/components/schemas/String" } }
+		],
+		"result": { "$ref": "#/components/contentDescriptors/token" }
+	  }
+	],
+	"components": {
+	  "contentDescriptors": {
+		"token": {
+		  "name": "token",
+		  "schema": {
+			"type": "string"
+		  }
+		}
+	  },
+	  "schemas": {
+		"String": {
+		  "type": "string"
+		}
+	  }
+	}
+  }
