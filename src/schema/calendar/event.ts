@@ -11,26 +11,29 @@ export enum Type {
 								// another is picking them up
 }
 
+// Common fields in the jsonb column
 export interface Fields {
-	name: string;
-	start: DateTime;
-	stop: DateTime;
-	entityId: number;
+	// Which guardians are watching the dependents
+	guardians: table.RowId[];
+
+	// Which dependents are being watched by said guardians above
+	dependentIds: table.RowId[];
 }
 
-export interface Visitation extends Fields {
-	pickupEntityId: number;
-	dropoffEntityId: number;
-	dependentIds: table.RowId[];
+// The top level columns for this model
+export interface Row extends table.Row<Type, Fields> {
+	// Name of event 
+	name: string;
+
+	// Start/stop times for event
+	start: DateTime;
+	stop: DateTime;
+
+	// Where the event is taking place
 	locationId: table.RowId;
 }
 
-export interface Appointment extends Fields {
-	guardianId: number;
-}
-
-export type Row = table.Row<Type, Fields>
-export class Model extends table.Model<Type, Fields> {
+export class Model extends table.Model<Type, Fields, Row> {
 	constructor(conn: Knex) {
 		super(conn, "event")
 	}

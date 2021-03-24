@@ -1,5 +1,4 @@
 import { Knex } from "knex"
-
 import * as util from "../util"
 
 export async function up(conn: Knex, schemaName: string, tableName: string) {

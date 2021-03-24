@@ -13,7 +13,7 @@ export interface Row<Type, Fields> {
 
 // A basic table class provides a few obvious methods all row based
 // objects in our app provide
-export abstract class Model<Type, Fields, RowType = Row<Type, Fields>> {
+export abstract class Model<Type, Fields, RowType extends Row<Type, Fields>> {
 	constructor(
 		protected mConn: Knex,
 		protected mTable: string) {

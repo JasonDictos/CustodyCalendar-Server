@@ -37,7 +37,7 @@ export interface Dependent extends Fields {
 }
 
 export type Row = table.Row<Type, Fields>;
-export class Model extends table.Model<Type, Fields> {
+export class Model extends table.Model<Type, Fields, Row> {
 	constructor(conn: Knex) {
 		super(conn, "entity")
 	}
