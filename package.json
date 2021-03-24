@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "npm run build && node --loader ts-node/esm --experimental-specifier-resolution=node build/server/server.js",
-    "portal:provision": "node --loader ts-node/esm --experimental-specifier-resolution=node build/schema/provision.js PORTAL_DATABASE_URL",
+    "portal:provision": "npm run build && node --loader ts-node/esm --experimental-specifier-resolution=node build/schema/provision.js PORTAL_DATABASE_URL",
     "calendar:provision": "npm run build && node --loader ts-node/esm --experimental-specifier-resolution=node build/schema/provision.js CALENDAR_DATABASE_URL",
     "portal:migrate:latest": "npm run portal:provision && npx knex --esm --knexfile src/schema/portal/knexfile.cjs migrate:latest",
     "portal:migrate:list": "npm run portal:provision && npx knex --esm --knexfile src/schema/portal/knexfile.cjs migrate:list",
