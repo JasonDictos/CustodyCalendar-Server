@@ -17,6 +17,17 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Entity Unit Test",
+            "runtimeExecutable": "node",
+			"program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
+			"args": [
+				"entity.test"
+			],
+            "console": "integratedTerminal"
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Debug Knex",
             "runtimeExecutable": "node",
             "program": "${workspaceFolder}\\node_modules\\knex\\bin\\cli.js",
