@@ -9,10 +9,10 @@ export interface Schema {
 	entity: entity.Model
 }
 
-export async function create(conn = Knex(config.Provider), schema = config.Database.schema) {
+export function create(conn = Knex(config.Provider)) {
 	return {
-		name: schema,
-		events: new event.Model(conn),
-		entities: new entity.Model(conn)
+		name: conn.client.config.connection.schema,
+		event: new event.Model(conn),
+		entity: new entity.Model(conn)
 	}
 }

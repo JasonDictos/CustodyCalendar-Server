@@ -1,44 +1,60 @@
 import { DateTime } from "luxon"
 import * as table from "../model"
 import { Knex } from "knex"
+import { assert } from "node:console"
 
 // Defines the body concretely for the entity row
 export enum Type {
-	Guardian = "guardian",
-	Dependent = "dependent",
-	Location = "location",
-	PhoneNumber = "phonenumber",
+	Guardian = "guardian",		// A person, acting as a legal guardian for a dependent
+	Dependent = "dependent",	// A child/cat/dog, requiring guarding
+	Group = "group",			// A relative, baseball team, some place, or person with ephemeral guardianship
 }
 
-// Entity wrapper to generalize how we encode entities in the eneity table
 export interface Fields {
-	name: string
+	email?: string
+	numbers?: PhoneNumber[]		// some entities may have multiple numbers/emails
+	birthday?: DateTime			// optionally (mostly for dependents)
+	locations?: Location[]		// leave locations optional in the base
 }
 
-export interface PhoneNumber extends Fields {
-	number: string				// fully qualified phone number
+export interface PhoneNumber {
+	type: string   // type of number (cell/house/beach house idk)	
+	number: string // fully qualified phone number
 }
 
-export interface Location extends Fields {
+export interface Location {
+	name: string						// summer house/home etc.
 	address: string						// fully qualified address (country etc. warranted)
 	geo?: { lon: number, lat: number}	// geo position
 }
 
 export interface Guardian extends Fields {
-	calendar?: string;        	// link back to front end portal record of payee or logged in customer info
-	email: string;              // full name (may be skipped if defaults fetched from customerId)
-	dependentIds: table.RowId[];		// row ids for dependents (want them separate to be able to store it once
+	portalUserId?: string       // link back to front end portal record of payee or logged in customer info
+	dependentIds: table.RowId[]	// row ids for dependents (want them separate to be able to store it once
 								// and reference it as needed)
+	locations: Location[]		// enforce locations for guardians
 }
 
 export interface Dependent extends Fields {
-	birthday: DateTime;
-	custodians: table.RowId[];
+	portalUserId?: string       // link back to front end portal record of payee or logged in customer info
 }
 
-export type Row = table.Row<Type, Fields>;
+// Our entity row
+export interface Row extends table.Row<Type, Fields> {
+	portalUserId?: string       // if this entity is a user in the system
+	name: string				// every place/person must be named
+}
+
 export class Model extends table.Model<Type, Fields, Row> {
 	constructor(conn: Knex) {
 		super(conn, "entity")
+	}
+
+	async selectDependents(guardianId: table.RowId, fields?: Dependent): Promise<Row[]> {
+		const guardian = await this.get(guardianId, Type.Guardian)
+		let query = this.table.select().whereIn("id", (guardian.fields as Guardian).dependentIds)
+		if (fields)
+			query = query.andWhere(fields)
+		return await query
 	}
 }

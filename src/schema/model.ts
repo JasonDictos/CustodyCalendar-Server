@@ -24,8 +24,8 @@ export abstract class Model<Type, Fields, RowType extends Row<Type, Fields>> {
 
 	async exists() { return this.schema.hasTable(this.tableName) }
 
-	async get(id: RowId): Promise<RowType> {
-		const res = await this.table.select().where({ id })
+	async get(id: RowId, type?: Type): Promise<RowType> {
+		const res = await this.table.select().where(type ? { id, type } : { id })
 		if (res.length)
 			return res[0]
 		throw new Error(`Not found ${id}`)
