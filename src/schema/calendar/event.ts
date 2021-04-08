@@ -1,4 +1,3 @@
-import { DateTime } from "luxon"
 import * as table from "../model"
 import { Knex } from "knex"
 
@@ -13,9 +12,6 @@ export enum Type {
 
 // Common fields in the jsonb column
 export interface Fields {
-	// Which guardians are watching the dependents
-	guardians: table.RowId[];
-
 	// Which dependents are being watched by said guardians above
 	dependentIds: table.RowId[];
 }
@@ -26,11 +22,14 @@ export interface Row extends table.Row<Type, Fields> {
 	name: string;
 
 	// Start/stop times for event
-	start: DateTime;
-	stop: DateTime;
+	start: Date | string;
+	stop: Date | string;
 
-	// Where the event is taking place
-	locationId: table.RowId;
+	// Which guardian is watching the dependents
+	guardianId: table.RowId
+
+	// If the event is being held at some group, the group id
+	groupId?: table.RowId
 }
 
 export class Model extends table.Model<Type, Fields, Row> {

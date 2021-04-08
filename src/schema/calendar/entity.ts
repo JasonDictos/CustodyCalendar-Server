@@ -1,7 +1,5 @@
-import { DateTime } from "luxon"
 import * as table from "../model"
 import { Knex } from "knex"
-import { assert } from "node:console"
 
 // Defines the body concretely for the entity row
 export enum Type {
@@ -13,7 +11,7 @@ export enum Type {
 export interface Fields {
 	email?: string
 	numbers?: PhoneNumber[]		// some entities may have multiple numbers/emails
-	birthday?: DateTime			// optionally (mostly for dependents)
+	birthday?: Date | string	// optionally (mostly for dependents)
 	locations?: Location[]		// leave locations optional in the base
 }
 
