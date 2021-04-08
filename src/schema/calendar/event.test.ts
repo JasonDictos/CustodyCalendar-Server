@@ -69,11 +69,11 @@ describe("schema.calendar.event", function()  {
 			} as entity.Dependent
 		})
 
-		await db.event.insert({
+		const momVisitId = await db.event.insert({
 			type: event.Type.Visitation,
 			name: "Time with Mom",
-			start: new Date(2021, 3, 8, 3, 10),
-			stop: new Date(2021, 3, 8, 4, 10),
+			start: "2021-4-8:06:00:PM",
+			stop: "2021-4-14:07:45:PM",
 			guardianId: dadId,
 			groupId: schoolId,
 			fields: {
@@ -81,7 +81,19 @@ describe("schema.calendar.event", function()  {
 			}
 		})
 
-		await db.event.insert({
+		const dadVisitId = await db.event.insert({
+			type: event.Type.Visitation,
+			name: "Time with Dad",
+			start: "2021-4-7:07:45:AM",
+			stop: "2021-4-7:07:45:AM",
+			guardianId: dadId,
+			groupId: schoolId,
+			fields: {
+				dependentIds: [marcusId, stellaId]
+			}
+		})
+
+		const dadEventId = await db.event.insert({
 			type: event.Type.Activity,
 			name: "Soccer Practice",
 			start: new Date(2021, 3, 5, 3, 10).toISOString(),
@@ -92,5 +104,11 @@ describe("schema.calendar.event", function()  {
 				dependentIds: [marcusId, stellaId]
 			}
 		})
+
+		const row = await db.event.get(momVisitId)
+		expect(row.type).toBe(event.Type.Visitation)
+		expect(row.type).toBe(event.Type.Visitation)
+
+		//		row = await db.event.get(momVisitId)
 	})
 })
