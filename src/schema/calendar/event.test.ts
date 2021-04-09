@@ -72,10 +72,9 @@ describe("schema.calendar.event", function()  {
 		const momVisitId = await db.event.insert({
 			type: event.Type.Visitation,
 			name: "Time with Mom",
-			start: "2021-4-8:06:00:PM",
-			stop: "2021-4-14:07:45:PM",
-			guardianId: dadId,
-			groupId: schoolId,
+			start: "April 8, 2021 18:00:00-7",
+			stop: "April 14, 2021 7:45:00-7",
+			guardianId: momId,
 			fields: {
 				dependentIds: [marcusId, stellaId]
 			}
@@ -84,10 +83,9 @@ describe("schema.calendar.event", function()  {
 		const dadVisitId = await db.event.insert({
 			type: event.Type.Visitation,
 			name: "Time with Dad",
-			start: "2021-4-7:07:45:AM",
-			stop: "2021-4-7:07:45:AM",
+			start: "April 7, 2021 7:45-7",
+			stop: "April 9, 2021 18:00-7",
 			guardianId: dadId,
-			groupId: schoolId,
 			fields: {
 				dependentIds: [marcusId, stellaId]
 			}
@@ -96,8 +94,8 @@ describe("schema.calendar.event", function()  {
 		const dadEventId = await db.event.insert({
 			type: event.Type.Activity,
 			name: "Soccer Practice",
-			start: new Date(2021, 3, 5, 3, 10).toISOString(),
-			stop: new Date(2021, 3, 5, 4, 10).toISOString(),
+			start: "April 8, 2021 15:10:00-7",
+			stop: "April 8, 2021 16:10:00-7",
 			guardianId: dadId,
 			groupId: schoolId,
 			fields: {
@@ -105,10 +103,31 @@ describe("schema.calendar.event", function()  {
 			}
 		})
 
-		const row = await db.event.get(momVisitId)
+		let row = await db.event.get(dadVisitId)
 		expect(row.type).toBe(event.Type.Visitation)
-		expect(row.type).toBe(event.Type.Visitation)
+		expect(row.name).toEqual("Time with Dad")
+		expect(row.start).toEqual(new Date("April 7, 2021 07:45-7"))
+		expect(row.stop).toEqual(new Date("April 9, 2021 18:00-7"))
+		expect(row.guardianId).toEqual(dadId)
+		expect(row.groupId).toBeNull()
+		expect(row.fields.dependentIds).toEqual([marcusId, stellaId])
 
-		//		row = await db.event.get(momVisitId)
+		row = await db.event.get(momVisitId)
+		expect(row.type).toBe(event.Type.Visitation)
+		expect(row.name).toEqual("Time with Mom")
+		expect(row.start).toEqual(new Date("April 8, 2021 18:00-7"))
+		expect(row.stop).toEqual(new Date("April 14, 2021 07:45-7"))
+		expect(row.guardianId).toEqual(momId)
+		expect(row.groupId).toBeNull()
+		expect(row.fields.dependentIds).toEqual([marcusId, stellaId])
+
+		row = await db.event.get(dadEventId)
+		expect(row.type).toBe(event.Type.Activity)
+		expect(row.name).toEqual("Soccer Practice")
+		expect(row.start).toEqual(new Date("April 8, 2021 15:10-7"))
+		expect(row.stop).toEqual(new Date("April 8, 2021 16:10-7"))
+		expect(row.guardianId).toEqual(dadId)
+		expect(row.groupId).toEqual(schoolId)
+		expect(row.fields.dependentIds).toEqual([marcusId, stellaId])
 	})
 })
