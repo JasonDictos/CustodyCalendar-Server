@@ -17,6 +17,7 @@ describe("schema.calendar.event", function()  {
 	afterAll(async () => {
 		conn.destroy()
 	})
+
 	test("General", async function()   {
 		await expect(db.entity.count()).resolves.toBe(0)
 
@@ -79,7 +80,7 @@ describe("schema.calendar.event", function()  {
 		expect(row.id).toBe(momId)
 		expect(row.type).toBe(entity.Type.Guardian)
 		expect(row.name).toBe("Nej Dictos")
-		expect(row.fields).toEqual({ 
+		expect(row.fields).toEqual({
 			locations: [{
 				name: "House Dad Paid For",
 				address: "5678"
@@ -104,8 +105,11 @@ describe("schema.calendar.event", function()  {
 			birthday: new Date("2011-8-10").toISOString()
 		})
 
-		// @@ TODO query kids email starting with somehow
-		//const query = model.table
+		// Showcase how you'd select dependents whose email matches something
+		const res = await model.table.select("*").
+			where("type", entity.Type.Dependent).
+			whereRaw("fields->>'email' like '%dictos%'")
+		expect(res.length).toBe(2)
 
 		await model.delete(momId)
 		await expect(model.count()).resolves.toBe(3)
