@@ -1,0 +1,9 @@
+{
+	"recommendations": [
+		"orta.vscode-jest",
+		"ms-vscode-remote.remote-ssh",
+		"ms-vscode-remote.remote-containers",
+		"dbaeumer.vscode-eslint",
+		"open-rpc.open-rpc"
+	]
+}
