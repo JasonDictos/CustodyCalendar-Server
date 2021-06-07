@@ -1,38 +1,35 @@
 import * as table from "../model"
 import { Knex } from "knex"
+import { DateTime } from "luxon"
 
-export enum Type {
-	Visitation = "visitiation", // A custodioal is enjoying some time with one or more dependents,
-								// another is picking them up
-	Appointment = "appointment",// Some responsible party is taking a dependent to an appointment
-								// presumably this is a one off with the same guardian taking them back
-	Activity = "activity"       // Some responsible party is taking the dependent to an activity,
-								// another is picking them up
+export enum SeriesType {
+	// Handled by the event.generator.Custody generator
+	Custody = "custody",
+
+	// Handled by the event.generator.Series generator
+	Series = "series"
 }
 
 // Common fields in the jsonb column
 export interface Fields {
+	// When this series started
+	start: DateTime
+
+	// Which guardians are part of the series
+	guardianIds: table.RowId[]
+
 	// Which dependents are being watched by said guardians above
-	dependentIds: table.RowId[];
+	dependentIds: table.RowId[]
 }
 
 // The top level columns for this model
-export interface Row extends table.Row<Type, Fields> {
-	// Name of event 
-	name: string;
-
-	// Start/stop times for event
-	start: Date | string;
-	stop: Date | string;
-
-	// Which guardian is watching the dependents
-	guardianId: table.RowId
-
-	// If the event is being held at some group, the group id
-	groupId?: table.RowId
+export interface Row extends table.Row<SeriesType, Fields> {
+	// A logical group defined by the user to sub associate
+	// definitions across series
+	group?: string;
 }
 
-export class Model extends table.Model<Type, Fields, Row> {
+export class Model extends table.Model<SeriesType, Fields, Row> {
 	constructor(conn: Knex) {
 		super(conn, "event")
 	}
