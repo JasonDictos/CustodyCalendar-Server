@@ -22,7 +22,7 @@ export interface Fields {
 }
 
 export interface Custody extends Fields {
-	key: string
+	guardian: string
 	months: string
 	days: string
 	pickup: string
