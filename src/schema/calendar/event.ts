@@ -1,20 +1,19 @@
 import * as table from "../model"
 import { Knex } from "knex"
-import { DateTime } from "luxon"
 
-export enum SeriesType {
-	// Handled by the event.generator.Custody generator
+export enum Type {
+	// Handled by the event.custody api
 	Custody = "custody",
 
-	// Handled by the event.generator.Series generator
-	Series = "series"
+	// Handled by the event.calendar api
+	Series = "calendar",
+
+	// US Holiday
+	Holidays_US = "Holidays_US"
 }
 
 // Common fields in the jsonb column
 export interface Fields {
-	// When this series started
-	start: DateTime
-
 	// Which guardians are part of the series
 	guardianIds: table.RowId[]
 
@@ -22,14 +21,23 @@ export interface Fields {
 	dependentIds: table.RowId[]
 }
 
+export interface Custody extends Fields {
+	key: string
+	months: string
+	days: string
+	pickup: string
+	start: string
+	stop: string
+}
+
 // The top level columns for this model
-export interface Row extends table.Row<SeriesType, Fields> {
+export interface Row extends table.Row<Type, Fields> {
 	// A logical group defined by the user to sub associate
 	// definitions across series
 	group?: string;
 }
 
-export class Model extends table.Model<SeriesType, Fields, Row> {
+export class Model extends table.Model<Type, Fields, Row> {
 	constructor(conn: Knex) {
 		super(conn, "event")
 	}
