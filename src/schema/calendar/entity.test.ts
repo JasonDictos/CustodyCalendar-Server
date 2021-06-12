@@ -9,6 +9,7 @@ describe("schema.calendar.event", function()  {
 
 	beforeAll(async () => {
 		conn = Knex(config.Provider)
+		await conn.migrate.latest({ directory: config.Provider.directory })
 		db = schema.create(conn)
 		await db.event.delete()
 		await db.entity.delete()
