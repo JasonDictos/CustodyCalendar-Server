@@ -8,7 +8,7 @@ export class Scheduler implements IterableIterator<Occurrance<Info>> {
 		protected mStart: DateTime,
 		protected mTimeZone: string,
 		protected mGuardians: string[],
-		protected mPlan: Plan[]) {
+		protected mPlans: Plan[]) {
 	}
 
 	public next(): IteratorResult<Occurrance<Info>> {

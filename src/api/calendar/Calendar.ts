@@ -9,7 +9,7 @@ export class Calendar {
 		private mSchema: schema.Schema) {
 	}
 
-	async listEventsInRange(start: DateTime, stop: DateTime): Promise<schema.event.Row[]> {
+	async listEventsInRange(start: DateTime, stop: DateTime): Promise<schema.plan.Row[]> {
 		throw new Error("@@TODO")
 	}
 

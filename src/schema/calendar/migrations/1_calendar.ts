@@ -5,8 +5,8 @@ import { Database } from "../config"
 
 export async function up(conn: Knex) {
 	await standard.up(conn, Database.schema, "entity")
-	await standard.up(conn, Database.schema, "event")
-	await conn.schema.withSchema(Database.schema).alterTable("event", table => {
+	await standard.up(conn, Database.schema, "plan")
+	await conn.schema.withSchema(Database.schema).alterTable("plan", table => {
 		table.string("group")
 			.nullable()
 			.comment("Group of events")
@@ -23,6 +23,6 @@ export async function up(conn: Knex) {
 }
 
 export async function down(conn: Knex) {
-	await standard.down(conn, Database.schema, "event")
+	await standard.down(conn, Database.schema, "plan")
 	await standard.down(conn, Database.schema, "entity")
 }

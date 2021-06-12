@@ -2,10 +2,10 @@ import * as table from "../model"
 import { Knex } from "knex"
 
 export enum Type {
-	// Handled by the event.custody api
+	// Handled by the schedule.custody api
 	Custody = "custody",
 
-	// Handled by the event.calendar api
+	// Handled by the schedule.calendar api
 	Series = "calendar",
 
 	// US Holiday
@@ -39,6 +39,6 @@ export interface Row extends table.Row<Type, Fields> {
 
 export class Model extends table.Model<Type, Fields, Row> {
 	constructor(conn: Knex) {
-		super(conn, "event")
+		super(conn, "plan")
 	}
 }
