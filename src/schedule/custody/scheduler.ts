@@ -9,6 +9,12 @@ export class Scheduler implements IterableIterator<Occurrance<Info>> {
 		protected mTimeZone: string,
 		protected mGuardians: string[],
 		protected mPlans: Plan[]) {
+
+		const m = this.mStart.month
+		const d = this.mStart.day
+		const y = this.mStart.year
+		const wd = this.mStart.weekday
+		console.log(m, d, y, wd)
 	}
 
 	public next(): IteratorResult<Occurrance<Info>> {
