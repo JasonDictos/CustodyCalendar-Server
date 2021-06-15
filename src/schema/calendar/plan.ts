@@ -2,14 +2,14 @@ import * as table from "../model"
 import { Knex } from "knex"
 
 export enum Type {
-	// Handled by the schedule.custody api
+	// planner.custody
 	Custody = "custody",
 
-	// Handled by the schedule.calendar api
+	// planner.calendar
 	Series = "calendar",
 
-	// US Holiday
-	Holidays_US = "Holidays_US"
+	// planner.holiday.us
+	Holidays_US = "holidays.us"
 }
 
 // Common fields in the jsonb column
