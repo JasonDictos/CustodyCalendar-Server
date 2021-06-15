@@ -66,10 +66,13 @@ export class Planner implements IterableIterator<Occurrance> {
 	protected mStop: DateTime
 	protected mLastEntity = ""
 
-	constructor(plans: Plan[], start: DateTime, duration = Duration.fromObject({ years: 1 })) {
+	constructor(plans: Plan[], start: DateTime, stop: Duration | DateTime) {
 		this.mPlans = Planner.explodePlans(plans)
 		this.mStart = start
-		this.mStop = start.plus(duration)
+		if (stop instanceof Duration)
+			this.mStop = start.plus(stop)
+		else
+			this.mStop = stop
 	}
 
 	static explodeRange(key: string, bucket: string[]) {
@@ -78,13 +81,17 @@ export class Planner implements IterableIterator<Occurrance> {
 		const stopIndex = bucket.indexOf(stop)
 		if (startIndex == -1 || startIndex == 0)
 			throw new Error(`Invalid start ${start}`)
+
+		// Allow no - just one month/day
+		if (start && !stop)
+			return [startIndex]
 		if (stopIndex == -1 || stopIndex == 0)
 			throw new Error(`Invalid stop ${stop}`)
 
 		const result: number[] = []
 		for (let index = startIndex; index < bucket.length && index != stopIndex; index++)
 			result.push(index)
-		for (let index = stopIndex; index <= stopIndex; index++)
+		for (let index = 1; index <= stopIndex; index++)
 			result.push(index)
 		return result
 	}
@@ -164,9 +171,9 @@ export class Planner implements IterableIterator<Occurrance> {
 				let stopTime = this.mStart
 
 				// Position (in 1 day intervals) until we reach the final day in the plan
-				while (matchingPlan.weekdays.indexOf(stopTime.weekday) != matchingPlan.weekdays.length - 1) {
+				do {
 					stopTime = stopTime.plus({ day: 1})
-				}
+				} while (matchingPlan.weekdays.indexOf(stopTime.weekday) != matchingPlan.weekdays.length - 1)
 
 				// Now we can set the hour/minute of the start time as its on the right day
 				// for alternating we allow %entity% macro to get substituted for a generic description

@@ -2,6 +2,50 @@ import * as custody from "."
 import { Duration, DateTime } from "luxon"
 
 describe("planner.custody.Planner", function()  {
+	test("Explode", async function() {
+		const exploded = custody.Planner.explodePlan({
+			entity: "bobo",
+			months: "Sep-May",
+			weekdays: "Fri-Wed",
+			start: {
+				timeOfDay: "07:45",
+				// Kids are dropped off (To dads, by mom)
+				exchange: custody.Exchange.Dropoff
+			},
+			stop: {
+				timeOfDay: "17:00",
+				// Kids are picked up (From dads, by mom)
+				exchange: custody.Exchange.Pickup
+			},
+			description: "Time with dad",
+		})
+
+		// mon(1) tue(2) wed(3) thu(4) fri(5) sat(6) sun(7)
+		// Fri-Wed should include 1, 2, 3, !4, 5, 6, 7
+		expect(exploded.weekdays).toContain(1)
+		expect(exploded.weekdays).toContain(2)
+		expect(exploded.weekdays).toContain(3)
+		expect(exploded.weekdays).not.toContain(4)
+		expect(exploded.weekdays).toContain(5)
+		expect(exploded.weekdays).toContain(6)
+		expect(exploded.weekdays).toContain(7)
+
+		// jan(1) feb(2) mar(3) apr(4) may(5) jun(6) jul(7) aug(8) sep(9) oct(10) nov(11) dec(12)
+		// Sep-May should include 1, 2, 3, 4, 5, !6, !7, !8, 9, 10, 11, 12,
+		expect(exploded.months).toContain(1)
+		expect(exploded.months).toContain(2)
+		expect(exploded.months).toContain(3)
+		expect(exploded.months).toContain(4)
+		expect(exploded.months).toContain(5)
+		expect(exploded.months).not.toContain(6)
+		expect(exploded.months).not.toContain(7)
+		expect(exploded.months).not.toContain(8)
+		expect(exploded.months).toContain(9)
+		expect(exploded.months).toContain(10)
+		expect(exploded.months).toContain(11)
+		expect(exploded.months).toContain(12)
+	})
+
 	test("Simple", async function() {
 		// January 2021
 		// SU MO TU WE TH FR SA
