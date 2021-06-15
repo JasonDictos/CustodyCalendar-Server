@@ -1,5 +1,5 @@
 import * as custody from "."
-import { Duration, DateTime, Settings } from "luxon"
+import { Duration, DateTime } from "luxon"
 
 describe("planner.custody.Planner", function()  {
 	test("Simple", async function() {
