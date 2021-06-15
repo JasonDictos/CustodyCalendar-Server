@@ -1,4 +1,4 @@
-import { Plan, Info, Occurrance } from "./types"
+import { Plan, Exchange, Occurrance } from "./types"
 import { DateTime, Duration } from "luxon"
 
 const Months = [
@@ -35,6 +35,12 @@ export interface ExplodedPlan {
 	weekdays: number[]		// All indexes for weekdays represented by range
 	months: number[]		// All indexes for months represented by range
 
+	// In alternating cases this is our saved cursor for the last entity position
+	// this allows for an infinite number of repetitions (mom,mom,mom,dad,dad,dad
+	// would equate to 3 repetitions with mom, then 3 with dad)
+	lastEntityIndex: number
+	entities: string[]		// Split array of all instances for entitys (comma delimited)
+
 	// Start/stop
 	// weekday - position in weekday marker applies to (0-6)
 	// hour - 24 hour hour portion of time (00-23)
@@ -58,6 +64,7 @@ export class Planner implements IterableIterator<Occurrance> {
 	protected mPlans: ExplodedPlan[]
 	protected mStart: DateTime
 	protected mStop: DateTime
+	protected mLastEntity = ""
 
 	constructor(plans: Plan[], start: DateTime, duration = Duration.fromObject({ years: 1 })) {
 		this.mPlans = Planner.explodePlans(plans)
@@ -96,9 +103,12 @@ export class Planner implements IterableIterator<Occurrance> {
 		const [stopHour, stopMinute] = Planner.explodeTimeOfDay(plan.stop.timeOfDay)
 		const weekdays = Planner.explodeRange(plan.weekdays, Weekdays)
 		const months = Planner.explodeRange(plan.months, Months)
+		const entities = plan.entity.split(",")
 		return {
 			weekdays,
 			months,
+			lastEntityIndex: 0,
+			entities,
 			start: {
 				weekday: weekdays[0],
 				hour: startHour,
@@ -118,6 +128,13 @@ export class Planner implements IterableIterator<Occurrance> {
 		for (const plan of plans)
 			explodedPlans.push(Planner.explodePlan(plan))
 		return explodedPlans
+	}
+
+	static selectNextEntity(plan: ExplodedPlan): string {
+		if (plan.lastEntityIndex < plan.entities.length)
+			return plan.entities[plan.lastEntityIndex++]
+		plan.lastEntityIndex = 0
+		return plan.entities[0]
 	}
 
 	public next(): IteratorResult<Occurrance> {
@@ -152,15 +169,26 @@ export class Planner implements IterableIterator<Occurrance> {
 				}
 
 				// Now we can set the hour/minute of the start time as its on the right day
+				// for alternating we allow %entity% macro to get substituted for a generic description
+				const entity = Planner.selectNextEntity(matchingPlan)
+				let exchange = matchingPlan.plan.start.exchange
+
+				// If this is a continuation (from whatever algorithm) the exchange is None to indicate no
+				// transition is in order
+				if (entity == this.mLastEntity)
+					exchange = Exchange.None
+
+				const description = matchingPlan.plan.description.replace(/%entity%/g, entity)
 				const occurrance: Occurrance = {
 					start: this.mStart,
 					stop: this.mStart = stopTime.set({ hour: matchingPlan.stop.hour, minute: matchingPlan.stop.minute}),
-					description: matchingPlan.plan.description,
+					description,
 					info: {
-						entity: matchingPlan.plan.entity,
-						exchange: matchingPlan.plan.start.exchange
+						entity,
+						exchange
 					}
 				}
+				this.mLastEntity = occurrance.info.entity
 				return { done: this.mStart >= this.mStop, value: occurrance }
 			}
 
