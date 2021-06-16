@@ -89,11 +89,20 @@ export class Planner implements IterableIterator<Occurrance> {
 			throw new Error(`Invalid stop ${stop}`)
 
 		const result: number[] = []
-		for (let index = startIndex; index < bucket.length && index != stopIndex; index++)
+
+		for (let index = startIndex; index < bucket.length; index++) {
 			result.push(index)
+			if (index == stopIndex) {
+				const flattened = new Set(result)
+				return [...flattened]
+			}
+		}
+
 		for (let index = 1; index <= stopIndex; index++)
 			result.push(index)
-		return result
+
+		const flattened = new Set(result)
+		return [...flattened]
 	}
 
 	static explodeTimeOfDay(timeOfDay: string) {
@@ -156,9 +165,9 @@ export class Planner implements IterableIterator<Occurrance> {
 			// override earlier definitions
 			let matchingPlan
 			for (const plan of this.mPlans) {
-				if (plan.months.indexOf(cMonth) == -1)
+				if (plan.months[0] != cMonth)
 					continue
-				if (plan.weekdays.indexOf(cWeekday) != 0)
+				if (plan.weekdays[0] != cWeekday)
 					continue
 
 				matchingPlan = plan
@@ -167,13 +176,14 @@ export class Planner implements IterableIterator<Occurrance> {
 			// Now if we found an occurrance, advanece by 1 minute until we breach
 			// the end (this allows the calendar to handle leap seconds etc.)
 			if (matchingPlan) {
-				this.mStart = this.mStart.set({ hour: matchingPlan.start.hour, minute: matchingPlan.start.minute })
-				let stopTime = this.mStart
+				// We can advance our start to the start of the plan
+				let stopTime = this.mStart = this.mStart.set({ hour: matchingPlan.start.hour, minute: matchingPlan.start.minute })
 
-				// Position (in 1 day intervals) until we reach the final day in the plan
-				do {
-					stopTime = stopTime.plus({ day: 1})
-				} while (matchingPlan.weekdays.indexOf(stopTime.weekday) != matchingPlan.weekdays.length - 1)
+				// Now if the plan has more then 1 day in it add those full days
+				stopTime = stopTime.plus({ days: matchingPlan.weekdays.length - 1})
+
+				// Now advance to the stop time in the plan this will represent the absolute stop time of the event
+				stopTime = stopTime.set({ hour: matchingPlan.stop.hour, minute: matchingPlan.stop.minute })
 
 				// Now we can set the hour/minute of the start time as its on the right day
 				// for alternating we allow %entity% macro to get substituted for a generic description
@@ -188,7 +198,7 @@ export class Planner implements IterableIterator<Occurrance> {
 				const description = matchingPlan.plan.description.replace(/%entity%/g, entity)
 				const occurrance: Occurrance = {
 					start: this.mStart,
-					stop: this.mStart = stopTime.set({ hour: matchingPlan.stop.hour, minute: matchingPlan.stop.minute}),
+					stop: stopTime,
 					description,
 					info: {
 						entity,
@@ -196,6 +206,9 @@ export class Planner implements IterableIterator<Occurrance> {
 					}
 				}
 				this.mLastEntity = occurrance.info.entity
+
+				// And now we can advance our start time to be at the stop time of the event
+				this.mStart = stopTime
 				return { done: this.mStart >= this.mStop, value: occurrance }
 			}
 

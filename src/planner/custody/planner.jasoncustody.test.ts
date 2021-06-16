@@ -125,18 +125,114 @@ describe("planner.custody.Planner", function()  {
 				description: "Time with %entity%",
 			}]
 
+		// Expected occurrances
+		const expected: custody.Occurrance[] = [
+			{
+				start: DateTime.fromISO("2021-01-01T17:00:00"),
+				stop: DateTime.fromISO("2021-01-04T07:45:00"),
+				description: "Time with mom",
+				info: {
+					entity: "mom",
+					exchange: custody.Exchange.Pickup
+				}
+			},
+			{
+				start: DateTime.fromISO("2021-01-04T07:45:00"),
+				stop: DateTime.fromISO("2021-01-08T17:00:00"),
+				description: "Time with dad",
+				info: {
+					entity: "dad",
+					exchange: custody.Exchange.Dropoff
+				}
+			},
+			{
+				start: DateTime.fromISO("2021-01-08T17:00:00"),
+				stop: DateTime.fromISO("2021-01-11T07:45:00"),
+				description: "Time with mom",
+				info: {
+					entity: "mom",
+					exchange: custody.Exchange.Pickup
+				}
+			},
+			{
+				start: DateTime.fromISO("2021-01-11T07:45:00"),
+				stop: DateTime.fromISO("2021-01-15T17:00:00"),
+				description: "Time with dad",
+				info: {
+					entity: "dad",
+					exchange: custody.Exchange.Dropoff
+				}
+			},
+			{
+				start: DateTime.fromISO("2021-01-15T17:00:00"),
+				stop: DateTime.fromISO("2021-01-18T07:45:00"),
+				description: "Time with mom",
+				info: {
+					entity: "mom",
+					exchange: custody.Exchange.Pickup
+				}
+			},
+			{
+				start: DateTime.fromISO("2021-01-18T07:45:00"),
+				stop: DateTime.fromISO("2021-01-22T17:00:00"),
+				description: "Time with dad",
+				info: {
+					entity: "dad",
+					exchange: custody.Exchange.Dropoff
+				}
+			},
+			{
+				start: DateTime.fromISO("2021-01-22T17:00:00"),
+				stop: DateTime.fromISO("2021-01-25T07:45:00"),
+				description: "Time with mom",
+				info: {
+					entity: "mom",
+					exchange: custody.Exchange.Pickup
+				}
+			},
+			{
+				start: DateTime.fromISO("2021-01-25T07:45:00"),
+				stop: DateTime.fromISO("2021-01-29T17:00:00"),
+				description: "Time with dad",
+				info: {
+					entity: "dad",
+					exchange: custody.Exchange.Dropoff
+				}
+			},
+			{
+				start: DateTime.fromISO("2021-01-29T17:00:00"),
+				stop: DateTime.fromISO("2021-02-01T07:45:00"),
+				description: "Time with mom",
+				info: {
+					entity: "mom",
+					exchange: custody.Exchange.Pickup
+				}
+			}
+		]
+
 		const planner = new custody.Planner(
 			plan,
 			DateTime.fromISO("2020-08-21T18:00:00"),
-			DateTime.fromISO("2021-06-16T18:00:00")
+			Duration.fromObject({ month: 1 })
 		)
 
 		function render(t: DateTime) {
-			return `${t.year} ${t.monthShort} ${t.day}, ${t.weekdayShort} at ${t.toLocaleString(DateTime.TIME_SIMPLE)}`
+			return `${t.monthShort} ${t.day}, ${t.weekdayShort} at ${t.toLocaleString(DateTime.TIME_SIMPLE)}`
 		}
 
+		let index = 0
 		for (const event of planner) {
-			console.log(`${event.description}\n\t${render(event.start)} until ${render(event.stop)}`)
+			console.log(`${index} ${event.description}\n\t${render(event.start)} until ${render(event.stop)}`)
+			const expectedEvent = expected[index++]
+			try {
+				expect(expectedEvent.start.toString()).toEqual(event.start.toString())
+				expect(expectedEvent.stop.toString()).toEqual(event.stop.toString())
+				expect(expectedEvent.description).toEqual(event.description)
+				expect(expectedEvent.info).toEqual(event.info)
+			} catch (e) {
+				console.warn(e)
+				throw e
+			}
 		}
 	})
 })

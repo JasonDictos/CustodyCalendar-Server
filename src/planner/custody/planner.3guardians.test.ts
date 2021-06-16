@@ -196,10 +196,15 @@ describe("planner.custody.Planner", function()  {
 		for (const event of planner) {
 			console.log(`${event.description}\n\t${render(event.start)} until ${render(event.stop)}`)
 			const expectedEvent = expected[index++]
-			expect(expectedEvent.start.toString()).toEqual(event.start.toString())
-			expect(expectedEvent.stop.toString()).toEqual(event.stop.toString())
-			expect(expectedEvent.description).toEqual(event.description)
-			expect(expectedEvent.info).toEqual(event.info)
+			try {
+				expect(expectedEvent.start.toString()).toEqual(event.start.toString())
+				expect(expectedEvent.stop.toString()).toEqual(event.stop.toString())
+				expect(expectedEvent.description).toEqual(event.description)
+				expect(expectedEvent.info).toEqual(event.info)
+			} catch (e) {
+				console.warn(e)
+				throw e
+			}
 		}
 	})
 })
