@@ -65,6 +65,7 @@ export class Planner implements IterableIterator<Occurrance> {
 	protected mStart: DateTime
 	protected mStop: DateTime
 	protected mLastEntity = ""
+	protected mCount = 0
 
 	constructor(plans: Plan[], start: DateTime, stop: Duration | DateTime) {
 		this.mPlans = Planner.explodePlans(plans)
@@ -93,16 +94,14 @@ export class Planner implements IterableIterator<Occurrance> {
 		for (let index = startIndex; index < bucket.length; index++) {
 			result.push(index)
 			if (index == stopIndex) {
-				const flattened = new Set(result)
-				return [...flattened]
+				return result
 			}
 		}
 
 		for (let index = 1; index <= stopIndex; index++)
 			result.push(index)
 
-		const flattened = new Set(result)
-		return [...flattened]
+		return result
 	}
 
 	static explodeTimeOfDay(timeOfDay: string) {
@@ -165,12 +164,13 @@ export class Planner implements IterableIterator<Occurrance> {
 			// override earlier definitions
 			let matchingPlan
 			for (const plan of this.mPlans) {
-				if (plan.months[0] != cMonth)
+				if (plan.months.indexOf(cMonth) == -1)
 					continue
 				if (plan.weekdays[0] != cWeekday)
 					continue
 
 				matchingPlan = plan
+				break
 			}
 
 			// Now if we found an occurrance, advanece by 1 minute until we breach
@@ -209,11 +209,16 @@ export class Planner implements IterableIterator<Occurrance> {
 
 				// And now we can advance our start time to be at the stop time of the event
 				this.mStart = stopTime
+				this.mCount++
 				return { done: this.mStart >= this.mStop, value: occurrance }
 			}
 
 			// Hmm no match... advance by 1 minute (@@TODO may be too small)
-			this.mStart = this.mStart.plus({ minute: 1 })
+			if (this.mCount == 0) {
+				this.mStart = this.mStart.plus({ minute: 1 })
+				continue
+			}
+			console.log("HOLE DETECTED")
 		}
 
 		// No more
