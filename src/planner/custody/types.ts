@@ -30,4 +30,4 @@ export interface Info {
 	exchange: Exchange
 }
 
-export type Occurrance = planner.Occurrance<Info>
+export type Occurrence = planner.Occurrence<Info>

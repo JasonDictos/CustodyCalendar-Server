@@ -140,8 +140,8 @@ describe("planner.custody.Planner", function()  {
 				description: "Fridays with %entity%",
 			}]
 
-		// Expected occurrances
-		const expected: custody.Occurrance[] = [
+		// Expected occurrences
+		const expected: custody.Occurrence[] = [
 			{
 				start: DateTime.fromISO("2020-08-21T07:45:00"),
 				stop: DateTime.fromISO("2021-08-24T18:00:00"),

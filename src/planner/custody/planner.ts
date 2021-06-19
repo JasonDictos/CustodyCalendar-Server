@@ -1,4 +1,4 @@
-import { Plan, Exchange, Occurrance } from "./types"
+import { Plan, Exchange, Occurrence as Occurrence } from "./types"
 import { DateTime, Duration } from "luxon"
 
 const Months = [
@@ -60,7 +60,7 @@ export interface ExplodedPlan {
 	plan: Plan
 }
 
-export class Planner implements IterableIterator<Occurrance> {
+export class Planner implements IterableIterator<Occurrence> {
 	protected mPlans: ExplodedPlan[]
 	protected mStart: DateTime
 	protected mStop: DateTime
@@ -152,14 +152,14 @@ export class Planner implements IterableIterator<Occurrance> {
 		return plan.entities[0]
 	}
 
-	public next(): IteratorResult<Occurrance> {
+	public next(): IteratorResult<Occurrence> {
 		// Loop until our cursor breaches the end stop
 		while (this.mStart < this.mStop) {
 			// Grab the current month and weekday
 			const cMonth = this.mStart.month
 			const cWeekday = this.mStart.weekday
 
-			// Loop and continue matching occurrances until we run out
+			// Loop and continue matching occurrences until we run out
 			// we keep looping even if we found a match this allows 'layered' to
 			// override earlier definitions
 			let matchingPlan
@@ -173,7 +173,7 @@ export class Planner implements IterableIterator<Occurrance> {
 				break
 			}
 
-			// Now if we found an occurrance, advanece by 1 minute until we breach
+			// Now if we found an occurrence, advance by 1 minute until we breach
 			// the end (this allows the calendar to handle leap seconds etc.)
 			if (matchingPlan) {
 				// We can advance our start to the start of the plan
@@ -196,7 +196,7 @@ export class Planner implements IterableIterator<Occurrance> {
 					exchange = Exchange.None
 
 				const description = matchingPlan.plan.description.replace(/%entity%/g, entity)
-				const occurrance: Occurrance = {
+				const occurrence: Occurrence = {
 					start: this.mStart,
 					stop: stopTime,
 					description,
@@ -205,12 +205,12 @@ export class Planner implements IterableIterator<Occurrance> {
 						exchange
 					}
 				}
-				this.mLastEntity = occurrance.info.entity
+				this.mLastEntity = occurrence.info.entity
 
 				// And now we can advance our start time to be at the stop time of the event
 				this.mStart = stopTime
 				this.mCount++
-				return { done: this.mStart >= this.mStop, value: occurrance }
+				return { done: this.mStart >= this.mStop, value: occurrence }
 			}
 
 			// Hmm no match... advance by 1 minute (@@TODO may be too small)
@@ -225,7 +225,7 @@ export class Planner implements IterableIterator<Occurrance> {
 		return { done: true, value: null }
 	}
 
-	[Symbol.iterator](): IterableIterator<Occurrance> {
+	[Symbol.iterator](): IterableIterator<Occurrence> {
 		return this
 	}
 }

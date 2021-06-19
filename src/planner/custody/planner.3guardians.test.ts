@@ -59,8 +59,8 @@ describe("planner.custody.Planner", function()  {
 			}
 		]
 
-		// Expected occurrances
-		const expected: custody.Occurrance[] = [
+		// Expected occurrences
+		const expected: custody.Occurrence[] = [
 			{
 				start: DateTime.fromISO("2021-01-01T17:00:00"),
 				stop: DateTime.fromISO("2021-01-04T07:45:00"),
@@ -191,7 +191,7 @@ describe("planner.custody.Planner", function()  {
 			return `${t.monthShort} ${t.day}, ${t.weekdayShort} at ${t.toLocaleString(DateTime.TIME_SIMPLE)}`
 		}
 
-		// Now we can iterate the occurrances
+		// Now we can iterate the occurrences
 		let index = 0
 		for (const event of planner) {
 			console.log(`${event.description}\n\t${render(event.start)} until ${render(event.stop)}`)

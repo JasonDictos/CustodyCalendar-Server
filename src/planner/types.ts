@@ -1,6 +1,6 @@
 import { DateTime } from "luxon"
 
-export interface Occurrance<T> {
+export interface Occurrence<T> {
 	start: DateTime
 	stop: DateTime
 	description: string

@@ -67,8 +67,8 @@ describe("planner.custody.Planner", function()  {
 				description: "Weekend with %entity%",
 			}]
 
-		// Expected occurrances
-		const expected: custody.Occurrance[] = [
+		// Expected occurrences
+		const expected: custody.Occurrence[] = [
 			{
 				start: DateTime.fromISO("2021-01-01T17:00:00"),
 				stop: DateTime.fromISO("2021-01-04T07:45:00"),
