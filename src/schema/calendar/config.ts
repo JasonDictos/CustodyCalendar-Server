@@ -12,6 +12,7 @@ export namespace Database {
 
 export const Provider = {
 	client: "postgresql",
+	directory: `${__dirname}/migrations`,
 	connection: {
 		schema: Database.schema || "public",
 		host: Database.host,

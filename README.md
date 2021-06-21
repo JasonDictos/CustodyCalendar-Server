@@ -26,7 +26,12 @@ Starting the docker postgresql instance:
 `
 cd docker
 docker-compose -f postgresql.yml up -d
+`
 
+Remove postgresql state of image:
+`
+cd docker
+docker-compose -f postgresql.yml down --rmi=all
 `
 
 Provisioning the portal and calendar schemas for testing:

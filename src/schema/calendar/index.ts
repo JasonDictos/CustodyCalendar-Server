@@ -1,3 +1,3 @@
 export * as entity from "./entity"
-export * as event from "./event"
+export * as plan from "./plan"
 export * from "./schema"
