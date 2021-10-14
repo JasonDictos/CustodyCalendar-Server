@@ -1,3 +1,5 @@
+NOTE: This project was an idea I had that I never quite finished, its here for posterity.
+
 # [Custody Calendar Server]
 
 This project is the back end code that runs to support the custody calendar system. It is comprised of two api endpoints:
